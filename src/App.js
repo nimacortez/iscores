@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from 'axios';
+import Button from './Button'; 
 
 const options = {
   method: 'GET',
@@ -32,11 +33,13 @@ function App() {
   }, []);
 
   return (
-    <div className="App">
+    <><div className="App">
       <header className="App-header">
         {/* Render your Scores state here */}
       </header>
-    </div>
+    </div><div>
+<Button/>
+      </div></>
   );
 }
 
