@@ -15,23 +15,52 @@ const options = {
   }
 };
 
+const statsOptions = {
+  method: 'GET',
+  url: 'https://free-nba.p.rapidapi.com/stats',
+  params: {
+    page: '0',
+    per_page: '25'
+  },
+  headers: {
+    'X-RapidAPI-Key': '4d73882bf5msh8772805fa93dc92p13371djsnf79699fec785',
+    'X-RapidAPI-Host': 'free-nba.p.rapidapi.com'
+  }
+};
+
 function App() {
+
+  
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const response = await axios.request(options);
+      console.log(response.data)
+      setScores(response.data.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  fetchData();
+}, []);
+
+useEffect(() => {
+  const fetchStats = async () => {
+    try {
+      const response = await axios.request(statsOptions);
+      console.log(response.data);
+      setStats(response.data.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  fetchStats();
+}, []);
+
   const [scores, setScores] = useState([]);
-  const [prevDate, setPrevDate] = useState('');
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.request(options);
-        console.log(response.data)
-        setScores(response.data.data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    fetchData();
-  }, []);
+  const [stats, setStats] = useState([]);
 
   const formatDate = (dateString) => {
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
