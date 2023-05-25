@@ -16,14 +16,15 @@ const options = {
 };
 
 function App() {
-  const [Scores, setScores] = useState();
+  const [scores, setScores] = useState([]);
+  const [prevDate, setPrevDate] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.request(options);
         console.log(response.data)
-        setScores(response.data); // Update the state with the response data
+        setScores(response.data.data);
       } catch (error) {
         console.error(error);
       }
@@ -32,14 +33,26 @@ function App() {
     fetchData();
   }, []);
 
+  const formatDate = (dateString) => {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  };
+
   return (
-    <><div className="App">
-      <header className="App-header">
-        {/* Render your Scores state here */}
-      </header>
-    </div><div>
-<Button/>
-      </div></>
+    <>
+      <div className="App">
+        <header className="App-header">
+          {scores.map((dataObj, index) => (
+            <div key={index}>
+              <p>{formatDate(dataObj.date)}</p>
+              <p>Away Team: {dataObj.visitor_team.full_name} {dataObj.visitor_team_score}</p>
+              <p>Home Team: {dataObj.home_team.full_name} {dataObj.home_team_score}</p>
+              <Button />
+            </div>
+          ))}
+        </header>
+      </div>
+    </>
   );
 }
 
